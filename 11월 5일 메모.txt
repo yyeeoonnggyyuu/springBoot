@@ -1,0 +1,42 @@
+ArticleForm{title='하이', content='뭐'}
+DTO에서 넘어온 값 이라 Id값이 없음
+Article{id=null, title='하이', content='뭐'}
+entity로 변환한 값 아직 id값이 부여되지않아 id는 null
+Article{id=1, title='하이', content='뭐'}
+articleRepository에 의해 id값 자동부여되어 1
+
+한글 setting으로도 안될 시
+help -> edit custom VM 간 후 이거 입력 -Dfile.encoding=UTF8
+
+1.@AllArgsConstructor
+
+1.모든 필드에 대해 매개변수를 받는 생성자를 자동으로 생성합니다.
+2.예를 들어, MyClass에 String name, int age라는 필드가 있다면 MyClass(String name, int age)라는 생성자가 생성됩니다.
+3.주로 필요한 모든 데이터를 한 번에 받아 초기화할 때 사용합니다.
+
+2.@NoArgsConstructor
+
+1.매개변수가 없는 기본 생성자를 생성합니다.
+2.필드 초기화를 별도로 하거나, 이후에 설정할 때 주로 사용합니다.
+3.주의: 필드에 final이 있을 경우 기본 생성자를 생성할 수 없기 때문에, @NoArgsConstructor(force = true)와 같이 강제 생성 옵션을 사용할 수 있습니다. 이 경우 final 필드는 기본값으로 초기화됩니다 (0이나 null 등).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
