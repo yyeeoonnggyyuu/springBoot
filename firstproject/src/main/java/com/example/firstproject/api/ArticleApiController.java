@@ -76,13 +76,5 @@ public class ArticleApiController {
                 // status(HttpStatus.OK) 내가 강제로 만든 요청(여기선 200) 정상
                 //.body(updated); 바디를 업데이트해줘
 
-//    DELETE
-
-//    @DeleteMapping("/api/articles/{id})
-//    public ResponseEntity<Article> delete(@PathVariable){
-//
-//    }
-
-
 
 }
