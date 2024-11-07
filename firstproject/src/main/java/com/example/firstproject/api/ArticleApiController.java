@@ -3,6 +3,7 @@ package com.example.firstproject.api;
 import com.example.firstproject.dto.ArticleForm;
 import com.example.firstproject.entity.Article;
 import com.example.firstproject.repository.ArticleRepository;
+import com.example.firstproject.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,77 +18,123 @@ import java.util.List;
 @RestController
 public class ArticleApiController {
 
-
-
-    //책 페이지 313
-    //빈 등록
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticleService articleService;
 
-//  GET
+    //  GET
     @GetMapping("/api/articles")
     public List<Article> index(){
-        return articleRepository.findAll();
+        return articleService.index();
     }
-
+    // GET id
     @GetMapping("/api/articles/{id}")
-    public Article show(@PathVariable Long id){
-        return articleRepository.findById(id).orElse(null);
+    public  Article show(@PathVariable Long id){
+        return articleService.show(id); //매개변수 id 조회를 위해선 PK값인 id값이필요함
     }
-//  POST
+
+    //  POST
     @PostMapping("/api/articles")
-    public Article create(@RequestBody ArticleForm dto){
-        Article article = dto.toEntity();
-        return articleRepository.save(article);
-
+    public ResponseEntity<Article> create(@RequestBody ArticleForm dto ){
+        Article created = articleService.create(dto);
+        return (created != null) ? ResponseEntity.status(HttpStatus.OK).body(created): ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-//  PATCH
+    //PATCH
     @PatchMapping("/api/articles/{id}")
     public ResponseEntity<Article> update(@PathVariable Long id, @RequestBody ArticleForm dto){
-        //1. DTO -> 엔티티 변환
-       Article article= dto.toEntity();
-       // article 은 내가 수정하고 싶은 녀석의 값
+        Article updated = articleService.update(id, dto);
+        return (updated != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(updated) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-       log.info("DTO-> entity 변환 = id: {}, article: {}", id, article.toString());
-
-        //2. 타깃 조회하기
-        Article target = articleRepository.findById(id).orElse(null);
-        // target 은 이녀석이 원래 가지고 있던 데이터
-
-        //3. 잘못된 요청 처리하기
-        if(target == null || id != article.getId()){
-
-            //400. 잘못된 용청 응답
-            log.info("잘못된 요청! id : {}, article : {}",id, article.toString());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }           //ResponseEntity 요청된결과를 가져가는 매서드
-                    // status(HttpStatus.BAD_REQUEST) 내가 강제로 만든 요청(여기선 400)
-                    //.body(null); body엔 null값 반환
-
-        //4. 업데이트 및 정상응답(200) 하기
-        target.patch(article);
-        //조회를 한녀석을 article로 패치(수정)해줘
-
-        Article updated = articleRepository.save(target);
-                            //최종적으로 save해줘
-        return ResponseEntity.status(HttpStatus.OK).body(updated);
-    }           //ResponseEntity 요청된결과를 가져가는 매서드
-                // status(HttpStatus.OK) 내가 강제로 만든 요청(여기선 200) 정상
-                //.body(updated); 바디를 업데이트해줘
-
+        }
+    //DELETE
     @DeleteMapping("/api/articles/{id}")
     public ResponseEntity<Article> delete(@PathVariable Long id){
-        //1.대상찾기
-        Article target = articleRepository.findById(id).orElse(null);
-        //2.잘못된 요청 처리하기
-        if(target == null){
-            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        //3. 대상 삭제하기
-        articleRepository.delete(target);
-        return ResponseEntity.status(HttpStatus.OK).build();
-
+        Article deleted = articleService.delete(id);
+        return (deleted != null) ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    //트래젝션 테스트
+    @PostMapping("/api/transaction-test")
+    public ResponseEntity<List<Article>> transactionTest(@RequestBody List<ArticleForm> dtos){
+        List<Article> createdList = articleService.createArticles(dtos);
+        return (createdList != null) ?
+            ResponseEntity.status(HttpStatus.OK).body(createdList) :
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+//    //빈 등록
+//    @Autowired
+//    private ArticleRepository articleRepository;
+//
+//    //  GET
+//    @GetMapping("/api/articles")
+//    public List<Article> index(){
+//        return articleRepository.findAll();
+//    }
+//    // GET id
+//    @GetMapping("/api/articles/{id}")
+//    public Article show(@PathVariable Long id){
+//        return articleRepository.findById(id).orElse(null);
+//    }
+//    //  POST
+//    @PostMapping("/api/articles")
+//    public Article create(@RequestBody ArticleForm dto){
+//        Article article = dto.toEntity();
+//        return articleRepository.save(article);
+//
+//    }
+//
+//    //  PATCH
+//    @PatchMapping("/api/articles/{id}")
+//    public ResponseEntity<Article> update(@PathVariable Long id, @RequestBody ArticleForm dto){
+//        //1. DTO -> 엔티티 변환
+//        Article article= dto.toEntity();
+//        // article 은 내가 수정하고 싶은 녀석의 값
+//
+//        log.info("DTO-> entity 변환 = id: {}, article: {}", id, article.toString());
+//
+//        //2. 타깃 조회하기
+//        Article target = articleRepository.findById(id).orElse(null);
+//        // target 은 이녀석이 원래 가지고 있던 데이터
+//
+//        //3. 잘못된 요청 처리하기
+//        if(target == null || id != article.getId()){
+//
+//            //400. 잘못된 용청 응답
+//            log.info("잘못된 요청! id : {}, article : {}",id, article.toString());
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        }           //ResponseEntity 요청된결과를 가져가는 매서드
+//        // status(HttpStatus.BAD_REQUEST) 내가 강제로 만든 요청(여기선 400)
+//        //.body(null); body엔 null값 반환
+//
+//        //4. 업데이트 및 정상응답(200) 하기
+//        target.patch(article);
+//        //조회를 한녀석을 article로 패치(수정)해줘
+//
+//        Article updated = articleRepository.save(target);
+//        //최종적으로 save해줘
+//        return ResponseEntity.status(HttpStatus.OK).body(updated);
+//    }           //ResponseEntity 요청된결과를 가져가는 매서드
+//    // status(HttpStatus.OK) 내가 강제로 만든 요청(여기선 200) 정상
+//    //.body(updated); 바디를 업데이트해줘
+//
+//    @DeleteMapping("/api/articles/{id}")
+//    public ResponseEntity<Article> delete(@PathVariable Long id){
+//        //1.대상찾기
+//        Article target = articleRepository.findById(id).orElse(null);
+//        //2.잘못된 요청 처리하기
+//        if(target == null){
+//            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        }
+//        //3. 대상 삭제하기
+//        articleRepository.delete(target);
+//        return ResponseEntity.status(HttpStatus.OK).build();
+//
+//    }
+
 }
+
+    //책 페이지 313

@@ -1,0 +1,23 @@
+controller와 restapi 
+restController 이해하기
+
+
+
+[
+{
+"title": "시간예약"
+"content": "12시30분"
+},
+{
+"title": "테이블 지정",
+"content": "T-3"
+},
+{
+"title": "메뉴 선택",
+"content": "꿀꽈배기"
+},
+]
+
+
+12월 14일리눅스 2차
+1월 말 sql 개발자 
