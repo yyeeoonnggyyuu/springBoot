@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -94,4 +95,16 @@ public class ArticleService {
 //         4. 결과 값 반환하기
             return articleList;
     }
+
+    //트래젝션 사용의 예
+    //이런식으로 트래젝션을 여러개 걸어둬서 사용가능함 이거는 좀 더 보고 확인해보기
+//    @Transactional
+//    public List<Article> a(List<ArticleForm> dtos){
+//        createArticles();
+//        delete(dtos);
+//
+//        return  articleList;
+//    }
+
+
 }
