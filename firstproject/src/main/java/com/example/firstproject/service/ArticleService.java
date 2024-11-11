@@ -45,7 +45,7 @@ public class ArticleService {
     //PATCH
     public Article update(Long id, ArticleForm dto) {
         //1.DTO -> 엔티티 변환
-        Article article = dto.toEntity();
+        Article article = dto.toEntity(); //불안전하기때문에 entity 로 변환
         log.info("id : {}, aritcle: {}", id, article.toString());
 
         //2.타겟 조회하기

@@ -14,6 +14,7 @@ import lombok.ToString;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // DB가 id 자동생성
+//                                기본적으로 auto 인데 여기선 identity
     private Long id;
     @Column
     private String title;

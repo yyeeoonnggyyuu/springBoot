@@ -16,4 +16,5 @@ public class ArticleForm {
     public Article toEntity() {
         return new Article(id, title, content);
     }
+
 }

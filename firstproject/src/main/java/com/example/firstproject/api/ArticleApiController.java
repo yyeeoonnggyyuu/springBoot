@@ -22,7 +22,7 @@ public class ArticleApiController {
     private ArticleService articleService;
 
     //  GET
-    @GetMapping("/api/articles")
+    @GetMapping("/a pi/articles")
     public List<Article> index(){
         return articleService.index();
     }
