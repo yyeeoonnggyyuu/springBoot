@@ -21,6 +21,7 @@ public class UserService {
                 .email(dto.getEmail())
                 .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .build()).getId();
+        //save의 메서드가 빌드까지 괄호 잘 확인하고 저장한 후 getId해라
     }
 
     // 이메일과 비밀번호로 사용자를 찾는 메서드
