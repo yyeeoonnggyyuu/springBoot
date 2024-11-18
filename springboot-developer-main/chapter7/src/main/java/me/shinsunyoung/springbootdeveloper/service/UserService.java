@@ -35,4 +35,8 @@ public class UserService {
             return Optional.empty();  // 일치하지 않으면 빈 Optional 반환
         }
     }
+
+    public User findById(Long userId){
+        return userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Unexpected user")) ;
+    }
 }
