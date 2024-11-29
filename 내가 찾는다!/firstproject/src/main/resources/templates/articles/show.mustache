@@ -1,0 +1,34 @@
+{{>layouts/header}}
+<form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Title</th>
+            <th scope="col">Content</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#article}}
+            <tr>
+                <th>{{id}}</th>
+                <td>{{title}}</td>
+                <td>{{content}}</td>
+            </tr>
+        {{/article}}
+        </tbody>
+
+    </table>
+    <a href="/articles/{{article.id}}/edit" class="btn btn-primary">Edit</a>
+    <a href="/articles/{{article.id}}/delete" class="btn btn-danger">delete</a><br>
+    {{#msg}}
+        <script>
+            alert("{{msg}}");
+        </script>
+    {{/msg}}
+    <a href="/articles/new">Go To New</a><br>
+    <a href="/articles">Go To Article</a>
+
+</form>
+
+{{>layouts/footer}}
